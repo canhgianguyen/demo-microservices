@@ -1,6 +1,6 @@
 package com.example.authservice.security;
 
-import com.example.authservice.model.request.JwtConfig;
+import com.example.authservice.model.JwtConfig;
 import com.example.authservice.model.request.UserRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;

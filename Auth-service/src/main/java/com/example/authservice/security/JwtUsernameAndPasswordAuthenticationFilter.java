@@ -1,6 +1,7 @@
 package com.example.authservice.security;
 
 import com.example.authservice.model.JwtConfig;
+import com.example.authservice.model.dto.UserSecurityDto;
 import com.example.authservice.model.request.UserRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
@@ -61,14 +62,15 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         Long now = System.currentTimeMillis();
+        UserSecurityDto userSecurityDto = (UserSecurityDto) authResult.getPrincipal();
         String token = Jwts.builder()
                 .setSubject(authResult.getName())
-                .claim("authorities", authResult.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .claim("user_id", userSecurityDto.getId())
+                .claim("authorities", userSecurityDto.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + jwtConfig.getExpiration() * 1000))
                 .signWith(SignatureAlgorithm.HS256, jwtConfig.getSecret().getBytes())
                 .compact();
-
         response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
     }
 }

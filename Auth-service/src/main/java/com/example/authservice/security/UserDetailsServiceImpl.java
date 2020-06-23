@@ -1,6 +1,7 @@
 package com.example.authservice.security;
 
 import com.example.authservice.entity.User;
+import com.example.authservice.model.dto.UserSecurityDto;
 import com.example.authservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -27,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getRole());
             List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
             grantedAuthorityList.add(grantedAuthority);
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorityList);
+            return new UserSecurityDto(user.getId(), user.getUsername(), user.getPassword(), grantedAuthorityList);
         }
         throw new UsernameNotFoundException("Username: " + username + " not found!");
     }

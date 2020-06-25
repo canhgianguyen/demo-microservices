@@ -1,4 +1,4 @@
-package com.example.orderservice.loccale;
+package com.example.orderservice.locale;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

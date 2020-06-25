@@ -1,4 +1,4 @@
-package com.example.orderservice.loccale;
+package com.example.gatewayservice.locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -21,3 +21,4 @@ public class Translator {
         return messageSource.getMessage(messageCode, params, locale);
     }
 }
+

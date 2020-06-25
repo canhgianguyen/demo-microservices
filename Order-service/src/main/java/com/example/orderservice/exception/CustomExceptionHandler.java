@@ -1,6 +1,6 @@
 package com.example.orderservice.exception;
 
-import com.example.orderservice.loccale.Translator;
+import com.example.orderservice.locale.Translator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

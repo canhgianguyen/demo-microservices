@@ -65,7 +65,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         UserSecurityDto userSecurityDto = (UserSecurityDto) authResult.getPrincipal();
         String token = Jwts.builder()
                 .setSubject(authResult.getName())
-                .claim("user_id", userSecurityDto.getId())
+                .claim("userId", userSecurityDto.getId())
                 .claim("authorities", userSecurityDto.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + jwtConfig.getExpiration() * 1000))

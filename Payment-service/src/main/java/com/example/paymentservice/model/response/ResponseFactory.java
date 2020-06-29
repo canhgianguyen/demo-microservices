@@ -1,5 +1,6 @@
 package com.example.paymentservice.model.response;
 
+import com.example.paymentservice.exception.ErrorResponse;
 import com.example.paymentservice.loccale.Translator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,5 +14,11 @@ public class ResponseFactory {
         responseObject.setStatus(responseStatus);
         responseObject.setData(data);
         return ResponseEntity.ok(responseObject);
+    }
+
+    public ResponseEntity<?> fail(Object data) {
+        ErrorResponse responseObject = (ErrorResponse) data;
+        HttpStatus status = HttpStatus.valueOf(responseObject.getCode());
+        return ResponseEntity.status(status).body(responseObject);
     }
 }

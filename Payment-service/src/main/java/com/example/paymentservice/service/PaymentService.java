@@ -1,5 +1,6 @@
 package com.example.paymentservice.service;
 
+import com.example.paymentservice.constant.CommonConstant;
 import com.example.paymentservice.entity.Payment;
 import com.example.paymentservice.exception.OutOfBalanceException;
 import com.example.paymentservice.exception.PaidException;
@@ -33,7 +34,7 @@ public class PaymentService extends ResponseUtils {
     String userUrl;
 
     /**
-     *
+     * pay an order
      * @param orderId
      * @return
      */
@@ -41,36 +42,40 @@ public class PaymentService extends ResponseUtils {
         ObjectMapper mapper = new ObjectMapper();
 
         // get order
-        GeneralResponse<?> orderResponse = responseUtils.getGeneralResponse(
+        GeneralResponse<?> orderResponse = responseUtils.execute(
                 HttpMethod.GET,
                 gatewayUrl + orderUrl + orderId,
                 null);
         OrderDto order = mapper.convertValue(orderResponse.getData(), OrderDto.class);
 
         // get user
-        GeneralResponse<?> userResponse = responseUtils.getGeneralResponse(
+        GeneralResponse<?> userResponse = responseUtils.execute(
                 HttpMethod.GET,
                 gatewayUrl + userUrl + getLoggedUser().getUsername(),
                 null);
         UserDto user = mapper.convertValue(userResponse.getData(), UserDto.class);
 
-        if (order.getStatus() == 1) {
+        // check if order is paid
+        if (order.getStatus() == CommonConstant.PAID_ORDER) {
             throw new PaidException(Translator.toLocale("error.msg.order.paid_detail"));
         }
 
+        // check if user has enough money
         if (user.getBalance().compareTo(order.getTotal()) == -1) {
             throw new OutOfBalanceException(Translator.toLocale("error.msg.user.out_of_balance"));
         }
 
+        // update user balance
         user.setBalance(user.getBalance().subtract(order.getTotal()));
-        responseUtils.getGeneralResponse(
+        responseUtils.execute(
                 HttpMethod.PUT,
                 gatewayUrl + userUrl,
                 user
         );
 
-        order.setStatus(1);
-        responseUtils.getGeneralResponse(
+        // update order status
+        order.setStatus(CommonConstant.PAID_ORDER);
+        responseUtils.execute(
                 HttpMethod.PUT,
                 gatewayUrl + orderUrl,
                 order
@@ -81,7 +86,6 @@ public class PaymentService extends ResponseUtils {
                 .userId(user.getId())
                 .total(order.getTotal())
                 .build();
-
         paymentRepository.save(payment);
 
         return "Successfully";

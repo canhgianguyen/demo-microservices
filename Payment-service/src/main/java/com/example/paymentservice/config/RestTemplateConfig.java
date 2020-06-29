@@ -1,5 +1,7 @@
 package com.example.paymentservice.config;
 
+import com.example.paymentservice.exception.RestTemplateResponseErrorHandler;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -10,9 +12,11 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 public class RestTemplateConfig {
     @Bean
+    @LoadBalanced
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler());
         return restTemplate;
     }
 }

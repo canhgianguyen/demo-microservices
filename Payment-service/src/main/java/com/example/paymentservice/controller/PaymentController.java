@@ -4,10 +4,7 @@ import com.example.paymentservice.model.response.ResponseFactory;
 import com.example.paymentservice.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pay/")
@@ -18,8 +15,8 @@ public class PaymentController {
     @Autowired
     private ResponseFactory responseFactory;
 
-    @GetMapping
-    public ResponseEntity<?> pay(@RequestParam Long orderId) {
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<?> pay(@PathVariable Long orderId) {
         return responseFactory.success(paymentService.pay(orderId));
     }
 }

@@ -13,7 +13,9 @@ public class OrderService {
     OrderRepository orderRepository;
 
     public Order getOrderById(Long id) {
-       return orderRepository.findById(id).orElseThrow(() -> new NotFoundException(Translator.toLocale("error.msg.record.not_found")));
+       return orderRepository
+               .findById(id)
+               .orElseThrow(() -> new NotFoundException(Translator.toLocale("error.msg.record.not_found")));
     }
 
     public Order updateOrder(Order order) {

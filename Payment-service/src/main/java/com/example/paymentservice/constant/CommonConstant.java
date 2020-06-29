@@ -26,4 +26,5 @@ public class CommonConstant {
   public static final String TIMESTAMP = "Timestamp";
   public static final String TIMESTAMP_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ssXXX";
   public static final String ACCEPT_LANGUAGE_VI = "vi";
+  public static final int PAID_ORDER = 1;
 }

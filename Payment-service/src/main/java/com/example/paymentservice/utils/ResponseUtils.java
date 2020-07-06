@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
 
 @Service
 public class ResponseUtils extends AuthService {
@@ -18,6 +19,7 @@ public class ResponseUtils extends AuthService {
     public GeneralResponse<Object> execute(HttpMethod httpMethod, String url, Object body) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(getLoggedUser().getToken());
+
 
         ObjectMapper mapper = new ObjectMapper();
         ResponseEntity<GeneralResponse> responseObject = restTemplateService
